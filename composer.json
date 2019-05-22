@@ -1,0 +1,35 @@
+{
+    "name": "roi-up-agency/php-kafka-schema-registry",
+    "description": "Library to consume and produce in Apache Kafka < 2.1 and Schema Registry, using php traits. This lib use the base present in Nicofuma/poc-php-kafka lib.",
+    "keywords": ["kafka", "schema registry"],
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "ROI UP Agency",
+            "email": "jsola@roi-up.es",
+            "homepage": "http://roi-up.es",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Kafka\\SchemaRegistry\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.1.0",
+        "ext-rdkafka": "^3.0",
+        "wikimedia/avro": "^1.8",
+        "guzzlehttp/guzzle": "6.3.*"
+    },
+    "require-dev": {
+        "kwn/php-rdkafka-stubs": "^0.0.5"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+    
+}
