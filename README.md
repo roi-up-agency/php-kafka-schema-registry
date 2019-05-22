@@ -1,6 +1,6 @@
 # php-kafka-schema-registry
 
-[![release](http://github-release-version.herokuapp.com/github/jsolam/php-kafka-schema-registry/release.svg?style=flat)](https://github.com/jsolam/php-kafka-schema-registry/releases/latest)
+[![release](http://github-release-version.herokuapp.com/github/roi-up-agency/php-kafka-schema-registry/release.svg?style=flat)](https://github.com/roi-up-agency/php-kafka-schema-registry/releases/latest)
 
 Library to consume and produce in Apache Kafka < 2.1 and Schema Registry, using php traits. This lib use the base present in Nicofuma/poc-php-kafka lib.
 
@@ -8,7 +8,7 @@ Library to consume and produce in Apache Kafka < 2.1 and Schema Registry, using 
 
 ```
 
-composer require jsolam/php-kafka-schema-registry 1.0.*
+composer require roi-up-agency/php-kafka-schema-registry 1.0.*
 
 ```
 ## .env Params
