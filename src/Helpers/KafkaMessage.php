@@ -72,7 +72,7 @@ class KafkaMessage
 
     public function getTopic()
     {
-        return $this->topic;
+        return TopicSuffix::getCleanedTopic($this->topic);
     }
 
     public function getPartition()
