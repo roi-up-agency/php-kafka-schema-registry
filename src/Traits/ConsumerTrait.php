@@ -8,6 +8,7 @@ use Kafka\SchemaRegistry\Constants\TopicConfParam;
 use Kafka\SchemaRegistry\Lib\AvroConsumer;
 use Kafka\SchemaRegistry\Interfaces\ConsumerCallbackInterface;
 use Kafka\SchemaRegistry\Exceptions\BadCallbackException;
+use Kafka\SchemaRegistry\Helpers\TopicSuffix;
 
 trait ConsumerTrait
 {
@@ -59,8 +60,8 @@ trait ConsumerTrait
         $this->conf->setDefaultTopicConf($this->topicConf);
 
         $this->kafka = new AvroConsumer($this->conf, $this->schemaRegistryUrl, ['register_missing_schemas' => false]);
-
-        $this->kafka->subscribe($topics);
+        
+        $this->kafka->subscribe(TopicSuffix::getSuffixedTopic($topics));
 
         echo "Waiting for partition assignment... (make take some time when\n";
         echo "quickly re-joining the group after leaving it.)\n";

@@ -160,8 +160,8 @@ trait KafkaTrait
 
     protected function setSchemaRegistryAndBrokerList($schemaRegistryUrl = null, $brokerList = null)
     {
-        $this->schemaRegistryUrl = ($schemaRegistryUrl != null) ? $schemaRegistryUrl : env('SCHEMA_REGISTRY_URL');
-        $this->brokerList        = ($brokerList != null) ? $brokerList : env('KAFKA_BROKERS');
+        $this->schemaRegistryUrl = ($schemaRegistryUrl != null) ? $schemaRegistryUrl : getenv('SCHEMA_REGISTRY_URL');
+        $this->brokerList        = ($brokerList != null) ? $brokerList : getenv('KAFKA_BROKERS');
 
         if ($this->schemaRegistryUrl == null) {
             throw new BadSchemaRegistryException('You must provide a schema registry url');

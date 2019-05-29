@@ -3,6 +3,7 @@
 namespace Kafka\SchemaRegistry\Lib;
 
 use RdKafka\ProducerTopic;
+use Kafka\SchemaRegistry\Helpers\TopicSuffix;
 
 class AvroProducer
 {
@@ -30,11 +31,11 @@ class AvroProducer
         $valueSchema = $valueSchema ?: $this->defaultValueSchema;
 
         if ($value && $valueSchema) {
-            $value = $this->serializer->encodeRecordWithSchema($this->producer->getName(), $valueSchema, $value, false, $format);
+            $value = $this->serializer->encodeRecordWithSchema(TopicSuffix::getCleanedTopic($this->producer->getName()), $valueSchema, $value, false, $format);
         }
 
         if ($key && $keySchema) {
-            $key = $this->serializer->encodeRecordWithSchema($this->producer->getName(), $keySchema, $key, true, $format);
+            $key = $this->serializer->encodeRecordWithSchema(TopicSuffix::getCleanedTopic($this->producer->getName()), $keySchema, $key, true, $format);
         }
 
         return $this->producer->produce($partition, $msgflags, $value, $key);

@@ -7,6 +7,7 @@ use Kafka\SchemaRegistry\Constants\ProducerConfParam;
 use Kafka\SchemaRegistry\Constants\TopicConfParam;
 use Kafka\SchemaRegistry\Lib\AvroProducer;
 use Kafka\SchemaRegistry\Lib\MessageSerializer;
+use Kafka\SchemaRegistry\Helpers\TopicSuffix;
 
 /**
  * Undocumented class
@@ -52,7 +53,7 @@ trait ProducerTrait
         $this->kafka->setLogLevel(LOG_DEBUG);
         $this->kafka->addBrokers($this->brokerList);
 
-        $producer = new AvroProducer($this->kafka->newTopic($topic), $this->schemaRegistryUrl, $this->keySchema, $this->schema, ['register_missing_schemas' => false]);
+        $producer = new AvroProducer($this->kafka->newTopic(TopicSuffix::getSuffixedTopic($topic)), $this->schemaRegistryUrl, $this->keySchema, $this->schema, ['register_missing_schemas' => false]);
 
         $start = microtime(true);
 
