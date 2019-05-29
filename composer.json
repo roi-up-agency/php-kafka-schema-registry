@@ -21,7 +21,8 @@
         "php": ">=7.1.0",
         "ext-rdkafka": "^3.0",
         "wikimedia/avro": "^1.8",
-        "guzzlehttp/guzzle": "6.3.*"
+        "guzzlehttp/guzzle": "6.3.*",
+        "vlucas/phpdotenv": "^3.3"
     },
     "require-dev": {
         "kwn/php-rdkafka-stubs": "^0.0.5"
