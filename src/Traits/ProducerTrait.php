@@ -23,17 +23,12 @@ trait ProducerTrait
      * @param  String $brokerList
      * @return void
      */
+
     public function prepare($schemaRegistryUrl = null, $brokerList = null)
     {
         $this->setSchemaRegistryAndBrokerList($schemaRegistryUrl, $brokerList);
 
-        if (null === $this->getSchemaSubject() || null === $this->getSchemaVersion()) {
-            throw new SchemaNotPreparedException('You must set the schema subject and schema version via setSchema($subject, $version = 1) before call prepare() method', 10);
-        }
-
         $this->initConfIfNeeded();
-
-        $this->prepareSchema();
 
         $this->conf->set(ProducerConfParam::COMPRESSION_TYPE, 'snappy');
         $this->conf->set(ProducerConfParam::LINGER_MS, '20');
@@ -43,6 +38,12 @@ trait ProducerTrait
 
     public function produce($topic, array $data, $key = null)
     {
+        if (null === $this->getSchemaSubject() || null === $this->getSchemaVersion()) {
+            throw new SchemaNotPreparedException('You must set the schema subject and schema version via setSchema($subject, $version = 1) before call prepare() method', 10);
+        }
+
+        $this->prepareSchema();
+
         //TODO Log it
         //echo "Producing " . sizeof($data). " messages to kafka topic '$topic'\n";
 
