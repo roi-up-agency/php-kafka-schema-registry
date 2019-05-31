@@ -21,7 +21,7 @@ class KafkaMessage
         $this->setTopic($this->message->topic_name);
         $this->setPartition($this->message->partition);
         $this->setOffset($this->message->offset);
-        $this->setTimestamp($this->message->timestamp);
+        $this->setTimestamp((isset($this->message->timestamp)) ? $this->message->timestamp : 0);
         $this->setError($this->message->err);
     }
 
