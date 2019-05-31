@@ -17,16 +17,16 @@ class TopicSuffix
 
     public static function getSuffixedTopic($topic){
         
-        if(is_array($topic)){
-            $tArray = [];
+        if (!empty(getenv('KAFKA_TOPIC_SUFFIX'))) {
+            if (is_array($topic)) {
+                $tArray = [];
 
-            foreach($topic as $t){
-                $tArray[] = $t . '_' . getenv('KAFKA_TOPIC_SUFFIX');
-            }
+                foreach ($topic as $t) {
+                    $tArray[] = $t . '_' . getenv('KAFKA_TOPIC_SUFFIX');
+                }
 
-            $topic = $tArray;
-        }else{
-            if(!empty(getenv('KAFKA_TOPIC_SUFFIX'))){
+                $topic = $tArray;
+            } else {
                 $topic .= '_' . getenv('KAFKA_TOPIC_SUFFIX');
             }
         }
