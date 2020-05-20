@@ -2,6 +2,7 @@
 
 namespace Kafka\SchemaRegistry\Traits;
 
+use Kafka\SchemaRegistry\Constants\TopicConfParam;
 use Kafka\SchemaRegistry\Lib\CachedSchemaRegistryClient;
 use Kafka\SchemaRegistry\Exceptions\BadBrokerListException;
 use Kafka\SchemaRegistry\Exceptions\BadSchemaRegistryException;
@@ -86,6 +87,24 @@ trait KafkaTrait
     {
         $this->initConfIfNeeded();
         return $this->topicConf->set($key, $value);
+    }
+
+    /**
+     * Set a param to current topic config
+     *
+     * @return void
+     */
+    protected function setDefaultTopicConf()
+    {
+        $this->initConfIfNeeded();
+        
+        $conf = $this->topicConf->dump();
+        if($conf[TopicConfParam::COMPRESSION_CODEC] == 'inherit'){
+            $conf[TopicConfParam::COMPRESSION_CODEC] = 'none';
+        }
+        foreach($conf as $key => $value){
+            $this->conf->set($key, $value);
+        }
     }
 
     /**

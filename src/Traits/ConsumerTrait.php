@@ -26,20 +26,23 @@ trait ConsumerTrait
 
         $this->initConfIfNeeded();
 
-        $this->conf->setRebalanceCb(function (\RdKafka\KafkaConsumer $kafka, $err, array $partitions = null) {
+        $this->conf->setRebalanceCb(function (AvroConsumer $kafka, $err, array $partitions = null) {
             switch ($err) {
                 case RD_KAFKA_RESP_ERR__ASSIGN_PARTITIONS:
                     $kafka->assign($partitions);
                     break;
-
                 case RD_KAFKA_RESP_ERR__REVOKE_PARTITIONS:
-                    $kafka->assign(null);
+                    $kafka->assign(NULL);
                     break;
-
                 default:
                     throw new \Exception($err);
             }
         });
+
+        $this->conf->set(TopicConfParam::AUTO_COMMIT_INTERVAL_MS, 100);
+
+
+        //$this->conf->set(TopicConfParam::OFFSET_STORE_METHOD, 'broker');
 
         // Initial list of Kafka brokers
         $this->conf->set(ConsumerConfParam::METADATA_BROKER_LIST, $this->brokerList);
@@ -47,7 +50,9 @@ trait ConsumerTrait
         // Set where to start consuming messages when there is no initial offset in
         // offset store or the desired offset is out of range.
         // 'smallest': start from the beginning
-        $this->topicConf->set(TopicConfParam::AUTO_OFFSET_RESET, 'smallest');
+        $this->conf->set(TopicConfParam::AUTO_OFFSET_RESET, 'smallest');
+
+        $this->conf->set(TopicConfParam::COMPRESSION_TYPE, 'snappy');
     }
 
     public function listen($topics, $callback)
@@ -57,10 +62,11 @@ trait ConsumerTrait
         $this->checkCallback();
 
         // Set the configuration to use for subscribed/assigned topics
-        $this->conf->setDefaultTopicConf($this->topicConf);
+        //$this->setDefaultTopicConf();
 
         $this->kafka = new AvroConsumer($this->conf, $this->schemaRegistryUrl, ['register_missing_schemas' => false]);
-        
+
+
         $this->kafka->subscribe(TopicSuffix::getSuffixedTopic($topics));
 
         echo "Waiting for partition assignment... (make take some time when\n";
@@ -81,9 +87,12 @@ trait ConsumerTrait
                 case RD_KAFKA_RESP_ERR__TIMED_OUT:
                     //echo "Timed out\n";
                     break;
-
                 default:
-                    throw new \Exception($message->errstr(), $message->err);
+                    if(isset($message->payload)){
+                        echo $message->payload;
+                    }else{
+                        throw new \Exception($message->errstr(), $message->err);
+                    }
                     break;
             }
         }
